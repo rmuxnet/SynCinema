@@ -1,0 +1,80 @@
+/* Custom styles for Login Page - Movie Night Together */
+
+/* Hide scrollbar completely */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Stars background container */
+.stars-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: fall linear infinite;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes fall {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px) rotate(0deg) scale(0);
+  }
+  5% {
+    opacity: 1;
+    transform: translateY(0) rotate(20deg) scale(1);
+  }
+  95% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(calc(100vh + 50px)) rotate(360deg) scale(0.5);
+  }
+}
+
+/* Custom text shadow for title */
+.login-title-shadow {
+  text-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+/* Custom box shadow for login container */
+.login-container-shadow {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(102, 126, 234, 0.1);
+}
+
+/* Custom active scale animation */
+.active-scale:active {
+  transform: scale(0.98);
+}
+
+/* Custom webkit font smoothing */
+.webkit-smooth {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Mobile responsive adjustments for very small screens */
+@media (max-width: 320px) {
+  .login-title-mobile {
+    font-size: 20px;
+  }
+  
+  .login-emoji-mobile {
+    font-size: 24px;
+  }
+}

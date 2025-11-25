@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Login to SynCinema - Watch movies with friends">
+    <title>Login - SynCinema</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo.png') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login-tailwind.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="{{ url_for('static', filename='js/stars-animation.js') }}" defer></script>
+</head>
+<body class="font-sans bg-black flex flex-col justify-center items-center min-h-screen p-4 webkit-smooth gap-4">
+    <div class="text-center">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="SynCinema Logo" class="w-32 h-32 md:w-40 md:h-40 mx-auto">
+    </div>
+    <main class="bg-gray-800 p-6 md:p-7 rounded-2xl border border-gray-700 shadow-2xl w-full max-w-sm backdrop-blur-md login-container-shadow relative z-10">
+        {% if error %}
+        <div class="bg-red-900/30 text-red-400 p-3 rounded-lg mb-5 text-center border border-red-800/50 flex items-center justify-center gap-2" role="alert" aria-live="assertive">
+            <span class="text-base">⚠️</span>
+            <span class="text-sm">{{ error }}</span>
+        </div>
+        {% endif %}
+        
+        <form method="POST" class="space-y-5" aria-label="Login form">
+            <div class="space-y-2">
+                <label for="username" class="block text-gray-300 font-medium text-sm">Username</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    required 
+                    autofocus 
+                    autocomplete="username"
+                    aria-describedby="username-help"
+                    placeholder="Enter your username"
+                    class="w-full px-3 py-2 border-2 border-gray-700 rounded-lg text-base bg-black text-white transition-all duration-300 focus:outline-none focus:border-indigo-400 focus:bg-gray-900 focus:ring-2 focus:ring-indigo-400/20 placeholder-gray-500 appearance-none"
+                >
+                <small id="username-help" class="block mt-1 text-gray-500 text-xs italic">Ask Your Host for the username</small>
+            </div>
+            
+            <div class="space-y-2">
+                <label for="password" class="block text-gray-300 font-medium text-sm">Password</label>
+                <input
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    required
+                    autocomplete="current-password"
+                    aria-describedby="password-help"
+                    placeholder="Enter your password"
+                    class="w-full px-3 py-2 border-2 border-gray-700 rounded-lg text-base bg-black text-white transition-all duration-300 focus:outline-none focus:border-indigo-400 focus:bg-gray-900 focus:ring-2 focus:ring-indigo-400/20 placeholder-gray-500 appearance-none"
+                >
+                <small id="password-help" class="block mt-1 text-gray-500 text-xs italic">Ask Your Host for the password</small>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <input 
+                    type="checkbox" 
+                    id="remember" 
+                    name="remember" 
+                    class="w-4 h-4 rounded border-2 border-gray-700 bg-black text-indigo-500 focus:ring-2 focus:ring-indigo-400/20 focus:ring-offset-0 cursor-pointer transition-all duration-200"
+                >
+                <label for="remember" class="text-gray-300 text-sm cursor-pointer select-none">Remember me</label>
+            </div>
+
+            <button type="submit" class="w-auto mx-auto px-6 py-2 bg-white text-black border-none rounded-md text-sm font-semibold cursor-pointer transition-all duration-300 mt-3 flex items-center justify-center gap-1 hover:bg-gray-200 active-scale">
+                <span>Login</span>
+            </button>
+        </form>
+    </main>
+</body>
+</html>

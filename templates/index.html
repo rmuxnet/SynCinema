@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Watch movies together with friends in real-time sync">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo.png') }}">
+    <title>SynCinema - {{ username }}</title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script>
+        const CURRENT_USERNAME = "{{ username }}";
+    </script>
+</head>
+<body class="m-0 p-0 font-sans bg-black text-white h-screen overflow-hidden select-none" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; touch-action: manipulation;">
+    <header class="bg-black px-5 py-4 flex justify-between items-center border-b border-gray-800">
+        <h1 class="text-2xl text-white-400 font-bold flex items-center gap-2" style="text-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);">
+            <span>SynCinema</span>
+        </h1>
+        <nav class="flex gap-4 items-center">
+            <span class="hidden md:block">Welcome, <strong>{{ username }}</strong></span>
+            <a href="/logout" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md no-underline transition-colors duration-300" aria-label="Logout">Logout</a>
+        </nav>
+    </header>
+    <main class="flex h-[calc(100vh-60px)] flex-row md:flex-row flex-col">
+        <section class="flex-1 flex flex-col p-4 min-w-0 md:h-auto h-[50vh]" aria-label="Video player section">
+            <div class="mb-3 flex gap-3 md:flex-row flex-col">
+                <label for="movieSelector" class="sr-only">Select a movie</label>
+                <select id="movieSelector" class="flex-1 p-3 bg-gray-900 text-white border border-gray-700 rounded-lg text-base cursor-pointer transition-colors duration-300 appearance-none hover:border-indigo-400 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20" aria-label="Movie selection">
+                    <option value="">Select a movie...</option>
+                    {% for movie in movies %}
+                    <option value="{{ movie }}" {% if movie == current_movie %}selected{% endif %}>{{ movie }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="flex-1 bg-black rounded-lg overflow-hidden flex items-center justify-center border border-gray-800 relative">
+                <button class="absolute top-3 right-3 bg-black/70 text-white border border-gray-800 rounded-lg px-4 py-2 cursor-pointer text-sm z-[100] backdrop-blur-sm flex items-center gap-2 transition-all duration-300 hover:bg-indigo-500/80 hover:-translate-y-px active:scale-98" id="theaterModeBtn" onclick="toggleTheaterMode()" aria-label="Toggle theater mode">
+                    <span id="theaterIcon" class="text-lg">🎭</span>
+                    <span id="theaterText">Theater Mode</span>
+                </button>
+                
+                <div class="absolute bottom-20 right-4 flex flex-col gap-2 z-[200] opacity-80 hover:opacity-100 transition-opacity duration-300 md:bottom-20 bottom-15 md:right-4 right-2 md:gap-2 gap-1" role="toolbar" aria-label="Quick reactions">
+                    <button class="bg-black/70 border border-gray-600 rounded-full w-11 h-11 flex items-center justify-center cursor-pointer text-xl transition-all duration-200 backdrop-blur-sm min-h-[44px] min-w-[44px] hover:bg-indigo-500/80 hover:scale-110 active:scale-95 md:w-11 md:h-11 w-10 h-10 md:text-xl text-lg md:min-h-[44px] md:min-w-[44px] min-h-[40px] min-w-[40px]" onclick="sendReaction('❤️')" title="Love" aria-label="Send love reaction">❤️</button>
+                    <button class="bg-black/70 border border-gray-600 rounded-full w-11 h-11 flex items-center justify-center cursor-pointer text-xl transition-all duration-200 backdrop-blur-sm min-h-[44px] min-w-[44px] hover:bg-indigo-500/80 hover:scale-110 active:scale-95 md:w-11 md:h-11 w-10 h-10 md:text-xl text-lg md:min-h-[44px] md:min-w-[44px] min-h-[40px] min-w-[40px]" onclick="sendReaction('😂')" title="Funny" aria-label="Send funny reaction">😂</button>
+                    <button class="bg-black/70 border border-gray-600 rounded-full w-11 h-11 flex items-center justify-center cursor-pointer text-xl transition-all duration-200 backdrop-blur-sm min-h-[44px] min-w-[44px] hover:bg-indigo-500/80 hover:scale-110 active:scale-95 md:w-11 md:h-11 w-10 h-10 md:text-xl text-lg md:min-h-[44px] md:min-w-[44px] min-h-[40px] min-w-[40px]" onclick="sendReaction('😱')" title="Scary" aria-label="Send scary reaction">😱</button>
+                    <button class="bg-black/70 border border-gray-600 rounded-full w-11 h-11 flex items-center justify-center cursor-pointer text-xl transition-all duration-200 backdrop-blur-sm min-h-[44px] min-w-[44px] hover:bg-indigo-500/80 hover:scale-110 active:scale-95 md:w-11 md:h-11 w-10 h-10 md:text-xl text-lg md:min-h-[44px] md:min-w-[44px] min-h-[40px] min-w-[40px]" onclick="sendReaction('😢')" title="Sad" aria-label="Send sad reaction">😢</button>
+                    <button class="bg-black/70 border border-gray-600 rounded-full w-11 h-11 flex items-center justify-center cursor-pointer text-xl transition-all duration-200 backdrop-blur-sm min-h-[44px] min-w-[44px] hover:bg-indigo-500/80 hover:scale-110 active:scale-95 md:w-11 md:h-11 w-10 h-10 md:text-xl text-lg md:min-h-[44px] md:min-w-[44px] min-h-[40px] min-w-[40px]" onclick="sendReaction('🔥')" title="Awesome" aria-label="Send awesome reaction">🔥</button>
+                </div>
+                
+                {% if current_movie %}
+                <video id="videoPlayer" class="w-full h-full object-contain" controls crossorigin="anonymous" preload="metadata" aria-label="Movie player">
+                    <source src="/movies/{{ current_movie }}" type="{{ get_video_mime_type(current_movie) }}">
+                    <p>Your browser does not support this video format. 
+                    {% if current_movie.endswith('.mkv') %}
+                    <br><strong>MKV files are not supported in most browsers.</strong>
+                    <br>Please try converting to MP4 or use VLC Media Player.
+                    {% endif %}
+                    </p>
+                </video>
+                {% else %}
+                <div class="text-gray-500 text-base text-center p-5" role="status" aria-live="polite">
+                    <p>Select a movie to start watching together</p>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="p-2 bg-gray-900 text-center text-sm text-gray-500 border-t border-gray-800" id="status" role="status" aria-live="polite">Connected</div>
+        </section>
+        
+        <aside class="w-80 bg-black flex flex-col border-l border-gray-800 relative md:w-80 md:h-auto md:border-l md:border-t-0 w-full h-[50vh] border-l-0 border-t" aria-label="Chat section">
+            <header class="p-4 bg-gray-900 border-b border-gray-800 flex-shrink-0 md:p-4 p-2">
+                <h2 class="text-lg font-bold">💬 Chat</h2>
+            </header>
+            
+            <div class="px-4 py-3 bg-gray-900 border-b border-gray-800 text-sm md:px-4 md:py-3 px-2 py-2" role="region" aria-label="Online users">
+                <div class="font-medium flex items-center justify-between flex-wrap gap-2">
+                    <span>Online Users (<span id="userCount">0</span>)</span>
+                    <span id="connectionStatus" class="hidden" style="display: none;">Connected</span>
+                </div>
+                <div class="flex flex-wrap gap-2 mt-1" id="onlineUsers" role="list" aria-label="List of online users">
+                    <!-- User badges will be inserted here -->
+                </div>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-3 min-h-0 md:p-4 p-2" id="chatMessages" role="log" aria-label="Chat messages" aria-live="polite" style="-webkit-overflow-scrolling: touch; overflow-y: scroll;">
+            </div>
+            
+            <div class="p-3 bg-gray-900 border-t border-gray-800 flex gap-2 flex-shrink-0 relative md:p-4 md:gap-3" role="form" style="min-height: 60px;">
+                <label for="messageInput" class="sr-only">Chat message</label>
+                <input type="text" id="messageInput" class="flex-1 p-3 bg-gray-800 border border-gray-600 rounded-lg text-white text-sm transition-colors duration-300 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20" placeholder="Type a message..." maxlength="500" aria-label="Type your message" style="font-size: 16px;">
+                <label class="flex items-center gap-1 text-xs text-gray-400 select-none cursor-pointer">
+                    <input type="checkbox" id="spoilerCheckbox" class="accent-indigo-500">
+                    Spoiler
+                </label>
+                <button onclick="sendMessage()" class="px-4 py-3 bg-indigo-500 text-white border-none rounded-lg cursor-pointer font-semibold transition-colors duration-300 hover:bg-indigo-600 flex-shrink-0 md:px-5" aria-label="Send message" style="min-width: 70px;">Send</button>
+            </div>
+        </aside>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</body>
+</html>

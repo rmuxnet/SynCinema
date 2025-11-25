@@ -1,0 +1,482 @@
+/* Custom styles for Movie Night Together */
+
+/* Theater mode styles */
+body.theater-mode header {
+  display: none !important;
+}
+
+body.theater-mode main {
+  height: 100vh !important;
+}
+
+body.theater-mode .video-section {
+  padding: 0 !important;
+}
+
+body.theater-mode .movie-select {
+  display: none !important;
+}
+
+body.theater-mode section > div:first-child {
+  display: none !important;
+}
+
+body.theater-mode .status {
+  display: none !important;
+}
+
+#status {
+  display: block;
+}
+
+body.theater-mode #status {
+  display: none !important;
+}
+
+body.theater-mode #connectionStatus {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 4px 10px !important;
+  background: rgb(45 80 22) !important;
+  border: 1px solid rgb(60 140 100) !important;
+  border-radius: 9999px !important;
+  font-size: 12px !important;
+  color: rgb(240 240 240) !important;
+}
+
+body.theater-mode #connectionStatus.disconnected {
+  background: rgb(90 26 26) !important;
+  border-color: rgb(180 60 60) !important;
+}
+
+body.theater-mode #connectionStatus::before {
+  content: '' !important;
+  width: 8px !important;
+  height: 8px !important;
+  background: rgb(100 220 140) !important;
+  border-radius: 50% !important;
+  display: inline-block !important;
+  animation: pulse 2s infinite !important;
+}
+
+body.theater-mode #connectionStatus.disconnected::before {
+  background: rgb(220 100 100) !important;
+  animation: none !important;
+}
+
+body.theater-mode .video-container {
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+body.theater-mode aside {
+  width: 400px !important;
+}
+
+/* Chat message styling */
+.message {
+  background: rgb(18 18 18);
+  padding: 12px;
+  border-radius: 8px;
+  word-break: break-word;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  border: 1px solid rgb(40 40 40);
+  flex-shrink: 0;
+  position: relative;
+  transition: all 0.2s ease;
+  max-width: 85%;
+  width: fit-content;
+  white-space: normal;
+  align-self: flex-start;
+}
+
+.message.own-message {
+  background: rgb(60 80 140);
+  border-color: rgb(80 100 160);
+  align-self: flex-end;
+  margin-left: auto;
+}
+
+.message.own-message .username {
+  color: rgb(200 210 240);
+}
+
+.message:hover {
+  background: rgb(28 28 28);
+  border-color: rgb(60 60 60);
+}
+
+.message:hover .message-reactions-btn {
+  opacity: 1;
+}
+
+.message-reactions-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgb(60 60 60);
+  border-radius: 4px;
+  color: rgb(160 160 160);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 4px 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.message-reactions-btn:hover {
+  background: rgba(100 150 200, 0.3);
+  color: rgb(180 210 240);
+}
+
+.message-reactions {
+  margin-top: 8px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 6px 8px;
+  background: rgba(20, 20, 20, 0.8);
+  border: 1px solid rgb(40 40 40);
+  border-radius: 8px;
+  width: fit-content;
+}
+
+.reaction {
+  background: rgba(100 150 200, 0.15);
+  border: 1px solid rgba(100 150 200, 0.3);
+  border-radius: 12px;
+  padding: 4px 8px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reaction:hover {
+  background: rgba(100 150 200, 0.25);
+  transform: scale(1.05);
+}
+
+.reaction.user-reacted {
+  background: rgba(100 150 200, 0.35);
+  border-color: rgba(100 150 200, 0.5);
+}
+
+.reaction-picker {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  background: rgb(15 15 15);
+  border: 1px solid rgb(60 60 60);
+  border-radius: 8px;
+  padding: 8px;
+  display: none;
+  z-index: 1000;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+  margin-bottom: 4px;
+}
+
+.reaction-picker.show {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.reaction-picker button {
+  background: rgba(40, 40, 40, 0.5);
+  border: 1px solid rgba(60, 60, 60, 0.5);
+  font-size: 16px;
+  padding: 6px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  min-width: 32px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reaction-picker button:hover {
+  background: rgba(100 150 200, 0.25);
+  border-color: rgba(100 150 200, 0.4);
+  transform: scale(1.1);
+}
+
+.message.system {
+  background: rgba(15 15 15, 0.5);
+  color: rgb(140 140 140);
+  font-style: italic;
+  text-align: center;
+  font-size: 14px;
+  border-color: rgb(40 40 40);
+}
+
+.message .avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 12px;
+  border: 2px solid rgb(50 50 50);
+}
+
+.message .username {
+  font-weight: 600;
+  color: rgb(140 180 220);
+  margin-right: 8px;
+}
+
+.message .timestamp {
+  font-size: 12px;
+  color: rgb(120 120 120);
+  margin-left: 8px;
+}
+
+/* User badge styling */
+.user-badge {
+  background: rgb(80 120 160);
+  color: rgb(240 240 240);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.user-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(80 120 160, 0.4);
+}
+
+.user-badge img {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgb(50 50 50);
+}
+
+.user-badge.watching {
+  background: rgb(60 140 100);
+  animation: pulse 2s infinite;
+}
+
+.user-badge.watching::after {
+  content: '▶️';
+  font-size: 10px;
+  margin-left: 2px;
+}
+
+.user-badge.typing {
+  background: rgb(180 140 80);
+  color: rgb(240 240 240);
+  animation: typing-pulse 1.5s infinite;
+}
+
+.user-badge.typing::after {
+  content: '✏️';
+  font-size: 10px;
+  margin-left: 2px;
+}
+
+/* Custom animations */
+@keyframes reactionFloat {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-50px) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px) scale(1.5);
+  }
+}
+
+@keyframes typing-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.reaction-animation {
+  position: absolute;
+  pointer-events: none;
+  font-size: 30px;
+  z-index: 250;
+  animation: reactionFloat 2s ease-out forwards;
+  will-change: transform, opacity;
+}
+
+/* Scrollbar styles - hidden */
+#chatMessages::-webkit-scrollbar {
+  width: 0px;
+  display: none;
+}
+
+#chatMessages {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Screen reader only class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Mobile specific styles for smaller screens */
+@media (max-width: 480px) {
+  body.theater-mode aside {
+    display: none !important;
+  }
+  
+  body.theater-mode .movie-select {
+    width: 300px !important;
+  }
+  
+  body.theater-mode .video-section {
+    height: 100vh !important;
+  }
+  
+  .message {
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  .message .avatar {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+  
+  .message .username {
+    font-size: 14px;
+  }
+  
+  .message .timestamp {
+    font-size: 12px;
+  }
+  
+  .user-badge {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+  
+  .user-badge img {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .reaction-picker {
+    padding: 6px;
+  }
+  
+  .reaction-picker button {
+    min-width: 28px;
+    min-height: 28px;
+    font-size: 14px;
+    padding: 4px;
+  }
+  
+  /* Ensure chat input is always visible and chat is scrollable */
+  aside {
+    min-height: 200px !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  #chatMessages {
+    flex: 1 1 auto !important;
+    overflow-y: scroll !important;
+    -webkit-overflow-scrolling: touch !important;
+    min-height: 100px !important;
+    max-height: none !important;
+  }
+  
+  #messageInput {
+    min-height: 44px !important;
+    padding: 12px !important;
+    font-size: 16px !important;
+  }
+}
+
+/* Additional mobile touch improvements */
+@media (max-width: 768px) {
+  .reaction-btn:active {
+    transform: scale(0.9);
+  }
+  
+  .theater-mode-btn:active {
+    transform: scale(0.95);
+  }
+  
+  /* Ensure chat input section is always visible */
+  aside > div:last-child {
+    position: sticky !important;
+    bottom: 0 !important;
+    background: rgb(0 0 0) !important;
+    z-index: 10 !important;
+  }
+  
+  /* Prevent chat input from being hidden */
+  #messageInput {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+}
+
+.spoiler {
+  background: rgb(40 40 40);
+  color: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color 0.2s;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-shadow: 0 0 8px #222;
+  min-height: 1em;
+}
+.spoiler::after {
+  content: 'Spoiler';
+  color: #aaa;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-size: 14px;
+  background: rgba(0,0,0,0.85);
+  border-radius: 4px;
+  z-index: 1;
+}
+.spoiler.revealed {
+  color: inherit;
+  text-shadow: none;
+}
+.spoiler.revealed::after {
+  display: none;
+}
