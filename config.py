@@ -1,22 +1,19 @@
 import os
 
 class Config:
-    SECRET_KEY = 'ithinkyoushouldchangeme'
+    SECRET_KEY = 'meowmeowmeow123'
     MOVIE_FOLDER = 'movies'
     AVATAR_FOLDER = 'pfp'
     USERS_FILE = 'static/user/acc.json'
     
-    # Server settings
     HOST = '0.0.0.0'
     PORT = 17701
     DEBUG = False
     
-    # Chat settings
     MAX_CHAT_MESSAGES = 100
     MAX_REACTIONS = 50
-    MIN_SAVE_TIME = 10  # Minimum seconds watched before saving progress
+    MIN_SAVE_TIME = 10
     
-    # Video MIME types
     VIDEO_MIME_TYPES = {
         '.mp4': 'video/mp4',
         '.mkv': 'video/x-matroska',
@@ -33,12 +30,4 @@ class Config:
         '.vob': 'video/dvd'
     }
     
-    # Supported video extensions
     VIDEO_EXTENSIONS = tuple(VIDEO_MIME_TYPES.keys())
-    
-    # User avatars
-    USER_AVATARS = {
-        "tester": "",
-        "admin": "",
-        "default": ""
-    }

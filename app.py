@@ -11,25 +11,20 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = Config.SECRET_KEY
 app.config['MOVIE_FOLDER'] = Config.MOVIE_FOLDER
 socketio = SocketIO(app, cors_allowed_origins="*", logger=False, engineio_logger=False)
-# Setup logging
 app_logger = setup_logging()
 
-# Setup routes and socket events
 setup_routes(app, app_logger)
 setup_socket_events(socketio, app_logger)
 
 if __name__ == '__main__':
-    # Create movies folder if it doesn't exist
     if not os.path.exists(Config.MOVIE_FOLDER):
         os.makedirs(Config.MOVIE_FOLDER)
         app_logger.info(f"Created movies folder: {Config.MOVIE_FOLDER}")
     
-    # Create avatar folder if it doesn't exist
     if not os.path.exists(Config.AVATAR_FOLDER):
         os.makedirs(Config.AVATAR_FOLDER)
         app_logger.info(f"Created avatars folder: {Config.AVATAR_FOLDER}")
     
-    # Display startup banner
     display_startup_banner(Config)
     app_logger.info("SynCinema server is ready!")
     print("")
