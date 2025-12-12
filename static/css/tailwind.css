@@ -1,9 +1,19 @@
+/* Add support for iPhone safe areas */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.overscroll-contain {
+  overscroll-behavior-y: contain;
+}
+
 body.theater-mode header {
   display: none !important;
 }
 
 body.theater-mode main {
   height: 100vh !important;
+  height: 100dvh !important;
 }
 
 body.theater-mode .video-section {
@@ -73,7 +83,7 @@ body.theater-mode aside {
 
 .message {
   background: rgb(18 18 18);
-  padding: 12px;
+  padding: 10px 12px;
   border-radius: 8px;
   word-break: break-word;
   word-wrap: break-word;
@@ -82,10 +92,11 @@ body.theater-mode aside {
   flex-shrink: 0;
   position: relative;
   transition: all 0.2s ease;
-  max-width: 85%;
+  max-width: 90%;
   width: fit-content;
   white-space: normal;
   align-self: flex-start;
+  line-height: 1.4;
 }
 
 .message.own-message {
@@ -110,8 +121,8 @@ body.theater-mode aside {
 
 .message-reactions-btn {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 6px;
+  right: 6px;
   background: rgba(0, 0, 0, 0.9);
   border: 1px solid rgb(60 60 60);
   border-radius: 4px;
@@ -123,17 +134,25 @@ body.theater-mode aside {
   transition: opacity 0.3s ease;
 }
 
+/* On mobile, allow reaction button to be visible on touch/focus since hover doesn't exist */
+@media (hover: none) {
+    .message-reactions-btn {
+        opacity: 0.5;
+    }
+}
+
 .message-reactions-btn:hover {
   background: rgba(100 150 200, 0.3);
   color: rgb(180 210 240);
+  opacity: 1;
 }
 
 .message-reactions {
-  margin-top: 8px;
+  margin-top: 6px;
   display: inline-flex;
   flex-wrap: wrap;
   gap: 4px;
-  padding: 6px 8px;
+  padding: 4px 8px;
   background: rgba(20, 20, 20, 0.8);
   border: 1px solid rgb(40 40 40);
   border-radius: 8px;
@@ -144,8 +163,8 @@ body.theater-mode aside {
   background: rgba(100 150 200, 0.15);
   border: 1px solid rgba(100 150 200, 0.3);
   border-radius: 12px;
-  padding: 4px 8px;
-  font-size: 12px;
+  padding: 2px 8px;
+  font-size: 11px;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -209,42 +228,45 @@ body.theater-mode aside {
   color: rgb(140 140 140);
   font-style: italic;
   text-align: center;
-  font-size: 14px;
+  font-size: 13px;
   border-color: rgb(40 40 40);
+  max-width: 100%;
+  width: 100%;
 }
 
 .message .avatar {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   object-fit: cover;
   display: inline-block;
   vertical-align: middle;
-  margin-right: 12px;
+  margin-right: 10px;
   border: 2px solid rgb(50 50 50);
 }
 
 .message .username {
   font-weight: 600;
   color: rgb(140 180 220);
-  margin-right: 8px;
+  margin-right: 6px;
+  font-size: 14px;
 }
 
 .message .timestamp {
-  font-size: 12px;
+  font-size: 11px;
   color: rgb(120 120 120);
-  margin-left: 8px;
+  margin-left: 6px;
 }
 
 .user-badge {
   background: rgb(80 120 160);
   color: rgb(240 240 240);
-  padding: 4px 12px;
+  padding: 4px 10px;
   border-radius: 9999px;
-  font-size: 12px;
+  font-size: 11px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   position: relative;
   transition: all 0.2s ease;
 }
@@ -315,13 +337,17 @@ body.theater-mode aside {
 }
 
 #chatMessages::-webkit-scrollbar {
-  width: 0px;
-  display: none;
+  width: 4px;
+  display: block;
+}
+#chatMessages::-webkit-scrollbar-thumb {
+  background-color: #333;
+  border-radius: 4px;
 }
 
 #chatMessages {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-width: thin;
+  scrollbar-color: #333 transparent;
 }
 .sr-only {
   position: absolute;
@@ -337,7 +363,11 @@ body.theater-mode aside {
 
 @media (max-width: 480px) {
   body.theater-mode aside {
-    display: none !important;
+    display: flex !important;
+  }
+
+  body.theater-mode aside header {
+    display: none;
   }
   
   body.theater-mode .movie-select {
@@ -345,12 +375,13 @@ body.theater-mode aside {
   }
   
   body.theater-mode .video-section {
-    height: 100vh !important;
+    height: 40dvh !important;
   }
   
   .message {
-    padding: 8px;
+    padding: 8px 10px;
     font-size: 14px;
+    max-width: 95%;
   }
   
   .message .avatar {
@@ -359,54 +390,19 @@ body.theater-mode aside {
     margin-right: 8px;
   }
   
-  .message .username {
-    font-size: 14px;
-  }
-  
-  .message .timestamp {
-    font-size: 12px;
-  }
-  
   .user-badge {
-    padding: 4px 8px;
-    font-size: 12px;
+    padding: 2px 8px;
   }
   
-  .user-badge img {
-    width: 12px;
-    height: 12px;
-  }
-  
-  .reaction-picker {
-    padding: 6px;
-  }
-  
-  .reaction-picker button {
-    min-width: 28px;
-    min-height: 28px;
-    font-size: 14px;
-    padding: 4px;
-  }
-  
-  /* Ensure chat input is always visible and chat is scrollable */
-  aside {
-    min-height: 200px !important;
-    display: flex !important;
-    flex-direction: column !important;
-  }
-  
+  /* Reset special scroll hacks in favor of flexbox */
   #chatMessages {
-    flex: 1 1 auto !important;
-    overflow-y: scroll !important;
     -webkit-overflow-scrolling: touch !important;
-    min-height: 100px !important;
-    max-height: none !important;
   }
   
   #messageInput {
     min-height: 44px !important;
-    padding: 12px !important;
-    font-size: 16px !important;
+    padding: 10px !important;
+    font-size: 16px !important; /* Prevents iOS zoom */
   }
 }
 
@@ -417,13 +413,6 @@ body.theater-mode aside {
   
   .theater-mode-btn:active {
     transform: scale(0.95);
-  }
-  
-  aside > div:last-child {
-    position: sticky !important;
-    bottom: 0 !important;
-    background: rgb(0 0 0) !important;
-    z-index: 10 !important;
   }
   
   #messageInput {
