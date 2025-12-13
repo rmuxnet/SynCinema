@@ -1,0 +1,14 @@
+SECRET_KEY=replace_this_with_a_long_random_string_12345
+
+# Server Configuration
+HOST=0.0.0.0
+PORT=17701
+DEBUG=False
+
+# Feature Flags
+VPN_DETECTION_ENABLED=False
+
+# File Paths (Relative to root)
+MOVIE_FOLDER=movies
+AVATAR_FOLDER=pfp
+USERS_FILE=static/user/acc.json
