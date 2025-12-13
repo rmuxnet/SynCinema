@@ -1,4 +1,4 @@
-from flask import render_template, request, session, redirect, url_for, send_from_directory, Response, send_file
+from flask import render_template, request, session, redirect, url_for, send_from_directory, Response, send_file, jsonify
 import os
 import re
 import logging
@@ -97,6 +97,25 @@ def setup_routes(app, app_logger):
             if os.path.exists(test_path):
                 return send_from_directory(Config.AVATAR_FOLDER, f"{username}{ext}")
         return "Avatar not found", 404
+
+    @app.route('/api/login', methods=['POST'])
+    def api_login():
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+        if username in USERS and USERS[username] == password:
+            session['username'] = username
+            session.permanent = True
+            app_logger.info(f"API Login successful: {username}")
+            return jsonify({'status': 'success', 'username': username}) 
+        return jsonify({'status': 'error', 'message': 'Invalid credentials'}), 401
+
+    @app.route('/api/movies')
+    def api_movies():
+        if 'username' not in session:
+            return jsonify({'error': 'Unauthorized'}), 401
+        movies = get_movies_list()
+        return jsonify({'movies': movies})
 
 def serve_partial_content(file_path, range_header, mime_type, file_size):
     try:
