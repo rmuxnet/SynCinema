@@ -9,6 +9,7 @@ class Config:
     HOST = '0.0.0.0'
     PORT = 17701
     DEBUG = False
+    VPN_DETECTION_ENABLED = False
     
     MAX_CHAT_MESSAGES = 100
     MAX_REACTIONS = 50

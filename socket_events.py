@@ -1,20 +1,46 @@
-from flask_socketio import emit, join_room, leave_room
+from flask_socketio import emit, join_room, leave_room, disconnect
 from datetime import datetime
+import requests
 from utils import get_user_avatar_url
 from config import Config
 from state import app_state
+
+def is_vpn(ip_address):
+    try:
+        if ip_address in ['127.0.0.1', '::1', 'localhost']:
+            return False
+
+        response = requests.get(
+            f"http://ip-api.com/json/{ip_address}?fields=status,proxy,hosting",
+            timeout=3
+        )
+        
+        if response.status_code == 200:
+            data = response.json()
+            if data.get('status') == 'success':
+                return data.get('proxy', False) or data.get('hosting', False)
+    except Exception:
+        pass
+    return False
 
 def setup_socket_events(socketio, app_logger):
     
     @socketio.on('connect')
     def handle_connect():
-        from flask import session
+        from flask import session, request
+        
+        client_ip = request.remote_addr
+        if Config.VPN_DETECTION_ENABLED and is_vpn(client_ip):
+            app_logger.warning(f"Connection rejected for user {session.get('username', 'Unknown')} from IP {client_ip} (VPN Detected)")
+            disconnect()
+            return
+
         if 'username' in session:
             avatar_url = get_user_avatar_url(session['username'])
             avatar_display = avatar_url if avatar_url else Config.USER_AVATARS.get(session['username'], Config.USER_AVATARS['default'])
             app_state.add_user(session['username'], avatar_display, avatar_url)
             join_room('movie_room')
-            app_logger.info(f"User {session['username']} connected to movie room")
+            app_logger.info(f"User {session['username']} connected to movie room from IP: {client_ip}")
             emit('user_joined', {
                 'username': session['username'],
                 'avatar': avatar_display,
@@ -31,14 +57,14 @@ def setup_socket_events(socketio, app_logger):
     
     @socketio.on('disconnect')
     def handle_disconnect():
-        from flask import session
+        from flask import session, request
         if 'username' in session:
             app_state.typing_users.discard(session['username'])
             emit('user_stopped_typing', {
                 'username': session['username']
             }, room='movie_room')
             app_state.remove_user(session['username'])
-            app_logger.info(f"User {session['username']} disconnected from movie room")
+            app_logger.info(f"User {session['username']} disconnected from movie room (IP: {request.remote_addr})")
             emit('user_left', {
                 'username': session['username'],
                 'timestamp': datetime.now().strftime('%H:%M:%S')
