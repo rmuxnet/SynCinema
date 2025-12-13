@@ -1,13 +1,14 @@
 import json
 import os
-from config import Config
+from src.config import Config
 
 def load_users():
     try:
         with open(Config.USERS_FILE, 'r') as f:
             return json.load(f)
     except FileNotFoundError:
-        default_users = {"Armandas": "-", "Sofia": "-"}
+        default_users = {"admin": "password"} 
+        
         os.makedirs(os.path.dirname(Config.USERS_FILE), exist_ok=True)
         with open(Config.USERS_FILE, 'w') as f:
             json.dump(default_users, f, indent=4)

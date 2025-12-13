@@ -35,7 +35,7 @@ class AppState:
                 self.active_users[username]['current_time'] = current_time
     
     def add_chat_message(self, message):
-        from config import Config
+        from src.config import Config
         self.chat_messages.append(message)
         if len(self.chat_messages) > Config.MAX_CHAT_MESSAGES:
             removed_message = self.chat_messages.pop(0)
@@ -43,7 +43,7 @@ class AppState:
                 del self.message_reactions[removed_message['id']]
     
     def add_reaction(self, reaction):
-        from config import Config
+        from src.config import Config
         self.recent_reactions.append(reaction)
         if len(self.recent_reactions) > Config.MAX_REACTIONS:
             self.recent_reactions.pop(0)

@@ -1,16 +1,19 @@
 from flask import Flask
 from flask_socketio import SocketIO
 import os
-from config import Config
-from logging_config import setup_logging, display_startup_banner
-from routes import setup_routes
-from socket_events import setup_socket_events
 from colorama import Fore, Style
+
+from src.config import Config
+from src.logging_config import setup_logging, display_startup_banner
+from src.routes import setup_routes
+from src.socket_events import setup_socket_events
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = Config.SECRET_KEY
 app.config['MOVIE_FOLDER'] = Config.MOVIE_FOLDER
+
 socketio = SocketIO(app, cors_allowed_origins="*", logger=False, engineio_logger=False)
+
 app_logger = setup_logging()
 
 setup_routes(app, app_logger)

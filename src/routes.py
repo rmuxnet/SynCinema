@@ -2,9 +2,9 @@ from flask import render_template, request, session, redirect, url_for, send_fro
 import os
 import re
 import logging
-from config import Config
-from utils import (load_users, get_user_avatar_url, get_video_mime_type, get_movies_list)
-from logging_config import CustomRequestLogger
+from src.config import Config
+from src.utils import (load_users, get_user_avatar_url, get_video_mime_type, get_movies_list)
+from src.logging_config import CustomRequestLogger
 
 def setup_routes(app, app_logger):
     USERS = load_users()
@@ -23,7 +23,7 @@ def setup_routes(app, app_logger):
         app_logger.info(f"User {session['username']} accessed main page")
         movies = get_movies_list()
         app_logger.info(f"Found {len(movies)} movies in library")
-        from state import app_state
+        from src.state import app_state
         return render_template('index.html', 
                              username=session['username'], 
                              movies=movies,

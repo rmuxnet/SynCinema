@@ -1,9 +1,9 @@
 from flask_socketio import emit, join_room, leave_room, disconnect
 from datetime import datetime
 import requests
-from utils import get_user_avatar_url
-from config import Config
-from state import app_state
+from src.utils import get_user_avatar_url
+from src.config import Config
+from src.state import app_state
 
 def is_vpn(ip_address):
     try:
